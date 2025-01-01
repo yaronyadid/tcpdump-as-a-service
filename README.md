@@ -4,24 +4,24 @@ This repository demonstrates how I leveraged [Dumpy](https://github.com/larryThe
 
 
 ## Whats Dumpy?
-* from the Dumpy github project:
-Dumpy is an advanced kubectl plugin designed for Kubernetes administrators, providing seamless network traffic capture using tcpdump from various resources. It excels in isolating captures to specific pod containers or nodes, ensuring security and accurate analysis. Dumpy dynamically creates dedicated sniffers that run tcpdump for each target.
+From the Dumpy github project:
+"Dumpy is an advanced kubectl plugin designed for Kubernetes administrators, providing seamless network traffic capture using tcpdump from various resources. It excels in isolating captures to specific pod containers or nodes, ensuring security and accurate analysis. Dumpy dynamically creates dedicated sniffers that run tcpdump for each target."
 
 ## Features
 
-Network Traffic Debugging: Allows regular users to capture traffic from pod network namespaces.
+-   Network Traffic Debugging: Allows regular users to capture traffic from pod network namespaces.
 
-Minimal Permissions: Users do not require elevated privileges.
+-   Minimal Permissions: Users do not require elevated privileges.
 
-Kubernetes-Native: Uses RBAC, namespaces, and Security Context Constraints (SCCs).
+-   Kubernetes-Native: Uses RBAC, namespaces, and Security Context Constraints (SCCs).
 
-Secure Implementation: Privileged container is isolated and managed carefully.
+-   Secure Implementation: Privileged container is isolated and managed carefully.
 
 ## Motivation
 
- As a cluster admin,A very common request from customers involves using tcpdump to troubleshoot application issues. 
- Unfortunately, many customers lack the necessary permissions to run network packet captures or monitor traffic themselves, which often delays the troubleshooting process. 
- Additionally, cluster administrators are often burdened with the task of manually gathering this data, which consumes valuable time that could be spent on more critical administrative tasks. 
+ As a cluster admin,A very common request from customers involves using tcpdump to troubleshoot application issues.
+ Unfortunately, many customers lack the necessary permissions to run network packet captures or monitor traffic themselves, which often delays the troubleshooting process.
+ Additionally, cluster administrators are often burdened with the task of manually gathering this data, which consumes valuable time that could be spent on more critical administrative tasks.
  TCPDUMP as a Service provides a solution by automating the collection of tcpdump data, enabling quick access to critical information without requiring elevated permissions from customers, while freeing up cluster admins to focus on more impactful activities.
 
 
