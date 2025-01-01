@@ -4,7 +4,7 @@ metadata:
   annotations:
     description: "Self Service For Creating TCPDUMP for Clients. The tcpdump will run for 5 min. and the output pcap file will be saved in the shared static volume."
     iconClass: icon-openshift
-    openshift.io/display-name: TCPDUMP for Clients
+    openshift.io/display-name: TCPDUMP as a Service
   name: tcpdump-as-a-service
   namespace: openshift
 objects:
@@ -58,7 +58,7 @@ objects:
         # I had to override the dumpy original file location for the pcap to be saved in the volume i add to this template.
         mountPath: /tmp/dumpy
     terminationMessagePolicy: File
-    image: 'art4.example1.com/dumpy-tcpdump/dumpy:0.2.0'
+    image: 'larrytheslap/dumpy'
     securityContext:
       runAsUser: 0
       privileged: true

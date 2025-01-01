@@ -34,7 +34,13 @@ Secure Implementation: Privileged container is isolated and managed carefully.
 
 3. The container runs tcpdump to capture network traffic.
 
-## 
+## How to run it
+
+1. If you are using Openshift console as a regular user you can go to Developer view ---> +Add button ---> under the Developer Catalog go to All services ---> go to TCPDUMP as a Service ---> Instantiate Template.
+
+2. If you are working with the CLI run the following command after installing the tool:
+
+oc process tcpdump-as-a-service -n openshift -p target_pod=<pod name> -p node_name=<the node the pod is running on> -p params="tcpdump parameters, the default will be : -i any " | oc apply -f -
 
 ## Prerequisites
 
