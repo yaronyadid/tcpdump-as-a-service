@@ -1,0 +1,79 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  annotations:
+    description: "Self Service For Creating TCPDUMP for Clients. The tcpdump will run for 5 min. and the output pcap file will be saved in the shared static volume."
+    iconClass: icon-openshift
+    openshift.io/display-name: TCPDUMP for Clients
+  name: tcpdump-as-a-service
+  namespace: openshift
+objects:
+- kind: Pod
+  apiVersion: v1
+  metadata:
+    #the name of the pod will be generated with a random value
+    generateName: "sniffer-"
+    namespace: dumpy-test
+    labels:
+      app: dumpy-kubectl-plugin
+      component: dumpy-sniffer
+    annotations:
+  spec:
+    # Added a node selector so that the dumpy pod will be able to run on the target pod node and tcpdump on it
+    nodeSelector:
+      kubernetes.io/hostname: ${node_name}
+    restartPolicy: Never
+    serviceAccountName: dumpy
+    hostPID: true
+    containers:
+    - resources:
+        limits:
+          # added the cpu limit so that the dumpy pod wont overload the node. can be changed.
+          cpu: 500m
+          ephemeral-storage: 16i
+          memory: 128Mi
+        requests:
+          cpu: 250m
+          ephemeral-storage: 512Mi
+          memory: 64Mi
+        name: dumpy-container
+        # In order to extract the container id of the pod process i used the binary crictl which openshift is using as the container runtime
+        # Then saved it to the env variable TARGET_CONTAINERID that the dumpy.sh is using. 
+        # All the pcap files will be save to /tmp/dumpy file location as default. I override the file location with the shared volume and added the CAPTURE_NAME as a random number
+        # so that the pcap files will be saved in different name for each run of the tcpdump and wont overwrite each other.
+        command: ["/bin/sh","-c","export CAPTURE_NAME=$RANDOM && export TARGET_CONTAINERID=$(nsenter -t 1 -m /usr/bin/crictl pods | grep '${target_pod}' | awk '{print $1}' | xargs -I {} sh -c 'nsenter -t 1 -m /usr/bin/crictl ps | grep {}' | awk '{print $1}' | xargs -I {} nsenter -t 1 -m /usr/bin/crictl inspect {} | jq -r .status.id) && timeout 5m ./dumpy_sniff.sh '${params}' || true"]
+    env:
+      - name: DUMPY_TARGET_TYPE
+        value: pod
+      - name: TARGET_POD
+        value: ${target_pod}
+    imagePullPolicy: IfNotPresent
+    startupProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/dumpy/healthy
+    volumeMounts:
+      - name: dumpy-tcp-dumps
+        # I had to override the dumpy original file location for the pcap to be saved in the volume i add to this template.
+        mountPath: /tmp/dumpy
+    terminationMessagePolicy: File
+    image: 'art4.example1.com/dumpy-tcpdump/dumpy:0.2.0'
+    securityContext:
+      runAsUser: 0
+      privileged: true
+    volumes:
+      # I created a static volume in my NAS server so that all the users will have access to it and they will be able to access their pcap files
+      - name: dumpy-tcp-dumps
+        persistentVolumeClaim:
+          claimName: dumpy-pvc
+parameters:
+  - description: The pod name that you want the tcpdump to run on
+    displayName: Target pod
+    name: target_pod
+    required: true
+  - description: The node that your pod is running on
+    displayName: Node Name
+    name: node_name
+    required: true
+  - description: tcpdump parameters , the default is "-i any"
