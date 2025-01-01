@@ -1,4 +1,4 @@
-TaaS - TCPDUMP as a Service: Empowering Regular Kubernetes Users to Run tcpdump
+## TaaS - TCPDUMP as a Service: Empowering Regular Kubernetes Users to Run tcpdump
 
 This repository demonstrates how I leveraged [Dumpy](https://github.com/larryTheSlap/dumpy) to enable regular Kubernetes users to capture network traffic (tcpdump) on their pods without requiring elevated permissions. By running privileged containers on the same node as target pods, Dumpy provides a secure and practical solution for debugging network issues.
 
@@ -23,7 +23,6 @@ Secure Implementation: Privileged container is isolated and managed carefully.
  Unfortunately, many customers lack the necessary permissions to run network packet captures or monitor traffic themselves, which often delays the troubleshooting process. 
  Additionally, cluster administrators are often burdened with the task of manually gathering this data, which consumes valuable time that could be spent on more critical administrative tasks. 
  TCPDUMP as a Service provides a solution by automating the collection of tcpdump data, enabling quick access to critical information without requiring elevated permissions from customers, while freeing up cluster admins to focus on more impactful activities.
-
 
 
 ## How It Works
@@ -58,6 +57,12 @@ Empowers Developers: Enables non-admin users to debug network issues independent
 Secure by Design: Maintains strict control over privileged access.
 
 Kubernetes-Native Workflow: Seamlessly integrates with existing Kubernetes infrastructure.
+
+## Failsafe
+
+In managing the cluster efficiently, I implemented a pod quota to control the number of pods running tcpdump, a resource-intensive action that can strain cluster performance if not managed properly. 
+Running tcpdump also places a significant load on the system's networking stack, potentially interfering with a node's network performance and impacting the connectivity of other workloads. By carefully limiting these pods, I ensured they did not overload the cluster or disrupt the networking of nodes, maintaining overall system stability and reliability.
+By configuring a ResourceQuota in the namespace where these pods run, I limited the maximum number of allowed pods. This measure ensured that tcpdump pods did not exceed the cluster's capacity or impact other critical workloads. The quota acts as a safeguard, maintaining cluster stability while allowing essential debugging and monitoring activities to proceed without overloading the system.
 
 
 ## Acknowledgments
