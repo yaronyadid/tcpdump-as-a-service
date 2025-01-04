@@ -60,7 +60,9 @@ oc process tcpdump-as-a-service -n openshift -p target_pod=<pod name> -p node_na
 
 ## Failsafe
 
-To manage resource usage effectively, I implemented a pod quota to limit the number of tcpdump pods. Since tcpdump is resource-intensive, it can overload the system's networking stack and interfere with node performance, affecting other workloads. By configuring a **ResourceQuota** in the namespace where these pods run, I ensured that tcpdump pods do not exceed the cluster's capacity or disrupt critical workloads. This safeguard maintains cluster stability while enabling essential debugging and monitoring activities without compromising system performance.
+1.  To manage resource usage effectively, I implemented a pod quota to limit the number of tcpdump pods. Since tcpdump is resource-intensive, it can overload the system's networking stack and interfere with node performance, affecting other workloads. By configuring a **ResourceQuota** in the namespace where these pods run, I ensured that tcpdump pods do not exceed the cluster's capacity or disrupt critical workloads. This safeguard maintains cluster stability while enabling essential debugging and monitoring activities without compromising system performance.
+
+2.  In order to prevent privilege escalation the privileged pod will be created in the dumpy namesapce so that the user wont have access to that pod and will only see the result at the end.
 
 ## Collaborations and Contributing
 
