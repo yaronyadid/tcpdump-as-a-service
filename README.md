@@ -1,5 +1,5 @@
 
-# TaaS - TCPDUMP as a Service: Empowering Regular Kubernetes Users to Capture Network Traffic
+# TaaS - TCPDUMP as a Service:  Simplifying Network Traffic Capture for Kubernetes/Openshift Users
 
 This repository demonstrates how I leveraged [Dumpy](https://github.com/larryTheSlap/dumpy) to enable regular Kubernetes users to capture network traffic (tcpdump) on their pods without requiring elevated permissions. By running privileged containers on the same node as the target pods, Dumpy provides a secure and practical solution for debugging network issues.
 
@@ -22,11 +22,11 @@ As a cluster administrator, a very common request from customers involves using 
 
 Cluster administrators are often burdened with the task of manually gathering this data, consuming valuable time that could be spent on more critical administrative tasks. **TCPDUMP as a Service** automates the collection of tcpdump data, enabling quick access to critical information without requiring elevated permissions from customers, while freeing up cluster admins to focus on more impactful activities.
 
-## How It Works
+## Prerequisites
 
-1. A privileged container runs on the same node as the target pod.
-2. The container enters the network namespace of the target pod.
-3. The container runs tcpdump to capture network traffic.
+- OpenShift cluster (4.12 or higher).
+- `oc` CLI tool installed.
+- Permissions to create namespaces, service accounts, and assign SCCs (Cluster Admin required).
 
 ## How to Run It
 
@@ -45,12 +45,6 @@ Cluster administrators are often burdened with the task of manually gathering th
 ```bash
 oc process tcpdump-as-a-service -n openshift -p target_pod=<pod name> -p node_name=<node name> -p params="tcpdump parameters (default: -i any)" | oc apply -f -
 ```
-
-## Prerequisites
-
-- OpenShift cluster (4.12 or higher).
-- `oc` CLI tool installed.
-- Permissions to create namespaces, service accounts, and assign SCCs (Cluster Admin required).
 
 ## Benefits
 
@@ -77,6 +71,3 @@ Contributions to this project are welcome! Whether you have ideas for new featur
 ## Acknowledgments
 
 This project is based on [Dumpy](https://github.com/larryTheSlap/dumpy), created by LarryTheSlap and Royce Miller. Thank you for your amazing work!
-
-
-## linkedin profile - http://linkedin.com/in/yaron-yadid
