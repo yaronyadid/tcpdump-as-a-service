@@ -16,6 +16,12 @@ rules:
   - list
   - watch
 - apiGroups:
+  - template.openshift.io
+  resources:
+  - processedtemplates # important for regular users to consume the template
+  verbs:
+  - create
+- apiGroups:
   - ""
   - image.openshift.io
   resources:
