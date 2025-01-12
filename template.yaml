@@ -13,7 +13,7 @@ objects:
   metadata:
     #the name of the pod will be generated with a random value
     generateName: "sniffer-"
-    namespace: dumpy-test
+    namespace: ${target_namespace}
     labels:
       app: dumpy-kubectl-plugin
       component: dumpy-sniffer
@@ -77,3 +77,12 @@ parameters:
     name: node_name
     required: true
   - description: tcpdump parameters , the default is "-i any"
+    displayName: TCPDUMP parameters
+    name: params
+    required: true
+    value: -i any
+  - description: dont change this value # needed to override the namespace value because of the intantiation process of openshift
+    displayName: dumpy namespace
+    name: target_namespace
+    value: dumpy
+    required: true
