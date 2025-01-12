@@ -3,7 +3,7 @@ kind: Role
 metadata:
   annotations:
     rbac.authorization.kubernetes.io/autoupdate: "true"
-  name: shared-resource-viewer
+  name: shared-resource-consumer
   namespace: openshift
 rules:
 - apiGroups:
