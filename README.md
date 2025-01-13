@@ -43,7 +43,7 @@ Cluster administrators are often burdened with the task of manually gathering th
 2. Run the following command:
 
 ```bash
-oc process tcpdump-as-a-service -n openshift -p target_pod=<pod name> -p node_name=<node name> -p params="tcpdump parameters (default: -i any)" | oc apply -f -
+oc process tcpdump-as-a-service -n openshift -p target_pod=<pod name> -p node_name=<node name> -p params="<tcpdump parameters (default: -i any)>" -p target_namespace=dumpy | oc apply -f -
 ```
 
 ## Benefits

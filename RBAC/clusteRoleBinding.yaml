@@ -5,7 +5,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: system:openshift:scc:privileged
+  name: system:openshift:scc:privileged # This is the default ClusterRole in OpenShift that allows usage of the privileged SCC.
 subjects:
   - kind: ServiceAccount
     name: dumpy-sa
